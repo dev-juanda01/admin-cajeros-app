@@ -15,40 +15,45 @@ import javax.swing.JLabel;
  * @author NATSU DRAGNEEL
  */
 public class Cajera extends Thread {
+
     private String nombre;
     private JLabel caja;
+    private Cliente cliente;
+    private long timeStamp;
 
     public Cajera(String nombre, JLabel caja) {
         this.nombre = nombre;
         this.caja = caja;
     }
-    
+
     @Override
     public void run() {
-//        procesarCompra(cliente, MIN_PRIORITY);
+        procesarCompra();
     }
-    
-    public void procesarCompra(Cliente cliente, long timeStamp) {
-        String logInicio = "Cajera - " + this.nombre + ": Procesando compra...\n" 
-                + "Cliente: " + cliente.getNombre() 
-                + "Tiempo: " + (System.currentTimeMillis() - timeStamp) / 1000;
-        
+
+    public void procesarCompra() {
+        String logInicio = "<html>Cajera - " + this.nombre + ": Procesando compra...<br/>"
+                + "Cliente: " + this.cliente.getNombre() + "<br/>"
+                + "Tiempo: " + (System.currentTimeMillis() - this.timeStamp) / 1000 + "</html>";
+
         caja.setText(logInicio);
         int conCliente = 1;
-        
-        for(Producto producto : cliente.getProductos()) {
+
+        for (Producto producto : cliente.getProductos()) {
             this.esperarXsegundo();
-            
+
             float costoTotal = producto.getCantidad() * producto.getPrecio();
-            String logProcesamiento = "Procesando el producto " + conCliente + "...\n" 
-                    + "Nombre producto: " + producto.getNombre() + "\n" 
-                    + "Precio producto: " + producto.getPrecio() + "\n" 
-                    + "Cantidad productos: " + producto.getCantidad() + "\n" 
-                    + "Costo total: " + costoTotal + "\n" 
-                    + "Tiempo: " + (System.currentTimeMillis() - timeStamp) / 1000;
+            String logProcesamiento = "<html>Procesando el producto " + conCliente + "...<br/>"
+                    + "Nombre producto: " + producto.getNombre() + "<br/>"
+                    + "Precio producto: " + producto.getPrecio() + "<br/>"
+                    + "Cantidad productos: " + producto.getCantidad() + "<br/>"
+                    + "Costo total: " + costoTotal + "<br/>"
+                    + "Tiempo: " + (System.currentTimeMillis() - this.timeStamp) / 1000 + " seg"+ "</html>";
+
+            caja.setText(logProcesamiento);
         }
     }
-    
+
     public void esperarXsegundo() {
         try {
             Cajera.sleep(1000);
@@ -56,5 +61,10 @@ public class Cajera extends Thread {
             // TODO: implementar retorno del catch
             Thread.currentThread().interrupt();
         };
+    }
+
+    public void setInfoProcesoCaja(Cliente cliente, long timeStamp) {
+        this.cliente = cliente;
+        this.timeStamp = timeStamp;
     }
 }

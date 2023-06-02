@@ -7,6 +7,7 @@ package com.iudigital.admincajaapp.producto.cliente;
 
 import java.util.List;
 import com.iudigital.admincajaapp.producto.Producto;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,7 +16,7 @@ import com.iudigital.admincajaapp.producto.Producto;
 public class Cliente {
     private final String nombre;
     private final String codigo;
-    private List<Producto> productos;
+    private List<Producto> productos = new ArrayList<>();
 
     public Cliente(String nombre, String codigo) {
         this.nombre = nombre;
@@ -34,8 +35,8 @@ public class Cliente {
         return productos;
     }
     
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
+    public void setProductos(Producto producto) {
+        this.productos.add(producto);
     }
     
 }
