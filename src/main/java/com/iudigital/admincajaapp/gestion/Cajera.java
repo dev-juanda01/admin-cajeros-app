@@ -60,7 +60,7 @@ public class Cajera extends Thread {
         } catch (InterruptedException e) {
             // TODO: implementar retorno del catch
             Thread.currentThread().interrupt();
-        };
+        }
     }
 
     public void setInfoProcesoCaja(Cliente cliente, long timeStamp) {

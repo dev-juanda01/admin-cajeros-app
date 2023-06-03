@@ -7,9 +7,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class GestionCajero extends javax.swing.JFrame {
+
     List<Cliente> listadoClientes = new ArrayList<>();
-    CajeraSinHilos cajera1 = new CajeraSinHilos();
-    CajeraSinHilos cajera2 = new CajeraSinHilos();
     CajeraSinHilos[] cajeros = new CajeraSinHilos[2];
     // Cajera cajera;
     String[] cajerosPermitidos = new String[2];
@@ -17,17 +16,17 @@ public class GestionCajero extends javax.swing.JFrame {
     public GestionCajero() {
         initComponents();
     }
-    
+
     public void procesarCompraCliente() {
-        
+
     }
-    
+
     public void obtenerCajero() {
-        if(cajerosPermitidos[1] == null) {
+        if (cajerosPermitidos[1] == null) {
             String cajero = txtNombreCajero.getText();
-            
-            if(cajero.trim().length() > 0) {
-                if(cajerosPermitidos[0] == null) {
+
+            if (cajero.trim().length() > 0) {
+                if (cajerosPermitidos[0] == null) {
                     cajerosPermitidos[0] = cajero;
                     txtNombreCajero.setText("");
                 } else {
@@ -42,32 +41,32 @@ public class GestionCajero extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Cajeros limitados");
         }
     }
-    
+
     public void obtenerCliente() {
         String nombre = txtNombreCliente.getText();
         String codigo = txtCodigoCliente.getText();
-        
-        if(nombre.trim().length() > 0 && codigo.trim().length() > 0) {
+
+        if (nombre.trim().length() > 0 && codigo.trim().length() > 0) {
             Cliente nuevoCliente = new Cliente(nombre, codigo);
             listadoClientes.add(nuevoCliente);
             txtNombreCliente.setText("");
             txtCodigoCliente.setText("");
         }
     }
-    
+
     public void obtenerProductos() {
         String nombre = txtNombreProducto.getText();
         String precio = txtPrecioProducto.getText();
         String cantidad = txtCantidadProducto.getText();
         String codigo = txtCodigoClienteAsignado.getText();
-        
-        if(nombre.trim().length() > 0 && precio.trim().length() > 0 
-                && cantidad.trim().length() > 0 
+
+        if (nombre.trim().length() > 0 && precio.trim().length() > 0
+                && cantidad.trim().length() > 0
                 && codigo.trim().length() > 0) {
-            
-            for(Cliente cliente : listadoClientes) {
-                if(cliente.getCodigo().equals(codigo)) {    
-                    if(!esNumeroFloat(precio) || !esNumeroInt(cantidad)) {
+
+            for (Cliente cliente : listadoClientes) {
+                if (cliente.getCodigo().equals(codigo)) {
+                    if (!esNumeroFloat(precio) || !esNumeroInt(cantidad)) {
                         JOptionPane.showMessageDialog(null, "No es un numero");
                     } else {
                         float nuevoPrecio = Float.parseFloat(precio);
@@ -80,7 +79,7 @@ public class GestionCajero extends javax.swing.JFrame {
                         txtCantidadProducto.setText("");
                         txtCodigoClienteAsignado.setText("");
                     }
-                    
+
                     return;
                 } else {
                     JOptionPane.showMessageDialog(null, "No existe el cliente");
@@ -88,15 +87,15 @@ public class GestionCajero extends javax.swing.JFrame {
             }
         }
     }
-    
+
     public Boolean esNumeroFloat(String valor) {
         return valor.matches("-?\\d+(\\.\\d+)?");
     }
-    
+
     public boolean esNumeroInt(String valor) {
         return valor.matches("^-?\\d+$");
     }
-    
+
 //    public void obtenerCajero(CajeraSinHilos cajera) {
 //        String nombre = txtNombreCajero.getText();
 //        if(nombre.trim().length() != 0 && cajeros.length <= 2) {
@@ -104,7 +103,6 @@ public class GestionCajero extends javax.swing.JFrame {
 //            cajeros[0] = cajera;
 //        }
 //    }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -213,8 +211,8 @@ public class GestionCajero extends javax.swing.JFrame {
                     .addComponent(btnActivarConHilos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnActivarSinHilos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel14))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -421,46 +419,68 @@ public class GestionCajero extends javax.swing.JFrame {
 
     private void btnActivarConHilosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarConHilosActionPerformed
         // TODO add your handling code here:
-        if(cajerosPermitidos[1] == null) {
+        if (cajerosPermitidos[1] == null) {
             JOptionPane.showMessageDialog(null, "No hay cajeros registrados - Registrelos");
         } else {
-           if(listadoClientes.size() > 1) {
-               if(listadoClientes.get(0).getProductos().size() > 0) {
+            if (listadoClientes.size() > 1) {
+                if (listadoClientes.get(0).getProductos().size() > 0) {
                     Cajera caja1 = new Cajera(cajerosPermitidos[0], lblCaja1);
                     Cajera caja2 = new Cajera(cajerosPermitidos[1], lblCaja2);
-                    
-                    
+
                     int balanceador = 0;
                     long timeStamp = System.currentTimeMillis();
-                    
-                    for(Cliente cliente : listadoClientes) {
-                        if(balanceador % 2 == 0) {
+
+                    for (Cliente cliente : listadoClientes) {
+                        if (balanceador % 2 == 0) {
                             caja1.setInfoProcesoCaja(cliente, timeStamp);
                             caja1.start();
                         } else {
                             caja2.setInfoProcesoCaja(cliente, timeStamp);
                             caja2.start();
                         }
-                        
+
                         balanceador++;
                     }
-                    
-               } else {
-                    JOptionPane.showMessageDialog(null, "No hay productos registrados - Registrelos"); 
-               }
-           } else {
-                JOptionPane.showMessageDialog(null, "Minimo 2 clientes permitidos - Registrelos"); 
-           }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "No hay productos registrados - Registrelos");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Minimo 2 clientes permitidos - Registrelos");
+            }
         }
     }//GEN-LAST:event_btnActivarConHilosActionPerformed
 
     private void btnActivarSinHilosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarSinHilosActionPerformed
         // TODO add your handling code here:
+        if (cajerosPermitidos[1] == null) {
+            JOptionPane.showMessageDialog(null, "No hay cajeros registrados - Registrelos");
+        } else {
+
+            CajeraSinHilos cajera1 = new CajeraSinHilos(cajerosPermitidos[0], lblCaja1);
+            CajeraSinHilos cajera2 = new CajeraSinHilos(cajerosPermitidos[1],lblCaja2);
+
+            if (listadoClientes.get(0).getProductos().size() > 0) {
+                int balanceador = 0;
+                long timestamp = System.currentTimeMillis();
+
+                for (Cliente cliente : listadoClientes) {
+
+                    if (balanceador % 2 == 0) {
+                        cajera1.setInfoProcesoCaja(cliente, timestamp);
+                        cajera1.procesarCompra();
+                    } else {
+                        cajera2.setInfoProcesoCaja(cliente, timestamp);
+                        cajera2.procesarCompra(); 
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_btnActivarSinHilosActionPerformed
 
     private void btnCrearCajeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearCajeroActionPerformed
         // TODO add your handling code here:
-       obtenerCajero();
+        obtenerCajero();
     }//GEN-LAST:event_btnCrearCajeroActionPerformed
 
     private void btnCrearClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearClienteActionPerformed
