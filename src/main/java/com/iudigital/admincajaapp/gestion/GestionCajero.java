@@ -453,27 +453,32 @@ public class GestionCajero extends javax.swing.JFrame {
 
     private void btnActivarSinHilosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarSinHilosActionPerformed
         // TODO add your handling code here:
+        lblCaja1.setText("");
+        lblCaja2.setText("");
         if (cajerosPermitidos[1] == null) {
             JOptionPane.showMessageDialog(null, "No hay cajeros registrados - Registrelos");
         } else {
 
             CajeraSinHilos cajera1 = new CajeraSinHilos(cajerosPermitidos[0], lblCaja1);
             CajeraSinHilos cajera2 = new CajeraSinHilos(cajerosPermitidos[1],lblCaja2);
+            if (listadoClientes.size() > 1) {
+                if (listadoClientes.get(0).getProductos().size() > 0) {
+                    int balanceador = 0;
+                    long timestamp = System.currentTimeMillis();
 
-            if (listadoClientes.get(0).getProductos().size() > 0) {
-                int balanceador = 0;
-                long timestamp = System.currentTimeMillis();
+                    for (Cliente cliente : listadoClientes) {
 
-                for (Cliente cliente : listadoClientes) {
-
-                    if (balanceador % 2 == 0) {
-                        cajera1.setInfoProcesoCaja(cliente, timestamp);
-                        cajera1.procesarCompra();
-                    } else {
-                        cajera2.setInfoProcesoCaja(cliente, timestamp);
-                        cajera2.procesarCompra(); 
+                        if (balanceador % 2 == 0) {
+                            cajera1.setInfoProcesoCaja(cliente, timestamp);
+                            cajera1.procesarCompra();
+                        } else {
+                            cajera2.setInfoProcesoCaja(cliente, timestamp);
+                            cajera2.procesarCompra(); 
+                        }
+                        
+                        balanceador++;
                     }
-                }
+                }    
             }
         }
     }//GEN-LAST:event_btnActivarSinHilosActionPerformed
